@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+echo "Search Query:"
+read searchquery
+
+youtube_video=$(curl -s "https://www.youtube.com/results?search_query=$searchquery" | grep -Eo "/watch[?=0-9,a-z,A-Z]{4,}" | head -n 1)
+base_yt_link='https://youtube.com'
+fullvid="${base_yt_link}${youtube_video}"
+echo "Current Video: $fullvid"
+mpv $fullvid
