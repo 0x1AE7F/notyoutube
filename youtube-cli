@@ -1,9 +1,2 @@
 #!/bin/sh
-echo "Search Query:"
-read userinput
-searchquery=$(echo $userinput | tr " " "+"
-youtube_video=$(curl -s "https://www.youtube.com/results?search_query=$searchquery" | grep -Eo "/watch[?=0-9,a-z,A-Z]{4,}" | head -n 1)
-base_yt_link='https://youtube.com'
-fullvid="${base_yt_link}${youtube_video}"
-echo "Current Video: $fullvid"
-mpv $fullvid
+echo "Search Query:"; read -r userinput; searchquery=$(echo "$userinput" | tr " " "+"); youtube_video=$(curl -s "https://www.youtube.com/results?search_query=$searchquery" | grep -Eo "/watch[?=0-9,a-z,A-Z]{4,}" | head -n 10); base_yt_link='https://youtube.com'; counter=0; for link in $youtube_video; do echo "[$counter] ${base_yt_link}${link}"; counter=$((counter + 1)); done; echo "Enter Index: "; read -r videoindex; counter_2=0 ;for link in $youtube_video; do if [ $counter_2 = "$videoindex" ]; then mpv $base_yt_link$link | xargs; fi; counter_2=$((counter_2 + 1)); done; exit 1;
